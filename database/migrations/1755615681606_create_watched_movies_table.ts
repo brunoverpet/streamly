@@ -7,8 +7,11 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('title')
-      table.enum('genres', GENRES)
+      table.string('title').notNullable()
+      table.enu('genre', GENRES, {
+        useNative : true,
+        enumName : 'movie_genre'
+      }).notNullable()
       table.float('rating')
 
       table.timestamp('created_at')
@@ -18,5 +21,6 @@ export default class extends BaseSchema {
 
   async down() {
     this.schema.dropTable(this.tableName)
+    this.schema.raw('DROP TYPE IF EXISTS "movie_genres"')
   }
 }

@@ -1,4 +1,4 @@
-const GENRES = [
+export const GENRES = [
   'Action',
   'Drame',
   'Comédie',
@@ -7,6 +7,4 @@ const GENRES = [
   'Aventure',
   'Animation',
   'Documentaire',
-]
-
-export default GENRES
+] as const
