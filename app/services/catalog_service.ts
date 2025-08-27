@@ -1,7 +1,11 @@
-import Catalog from '#models/catalog'
+import { inject } from '@adonisjs/core'
+import { TmdbService } from '#services/tmdb_service'
 
+@inject()
 export class CatalogService {
-  async getCatalog() {
-    return await Catalog.all()
+  constructor(private tmdbService: TmdbService) {}
+
+  async getCatalogs() {
+    return await this.tmdbService.getAllMovies()
   }
 }
