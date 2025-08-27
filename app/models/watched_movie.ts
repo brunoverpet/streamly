@@ -6,10 +6,25 @@ export default class WatchedMovie extends BaseModel {
   declare id: number
 
   @column()
+  declare idTmdb: string
+
+  @column()
   declare title: string
 
   @column()
-  declare genre: string
+  declare coverUrl: string
+
+  @column()
+  declare director: string
+
+  @column()
+  declare genres: object[]
+
+  @column()
+  declare keywords: object[]
+
+  @column()
+  declare actors: object[]
 
   @column()
   declare rating: number
