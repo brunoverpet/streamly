@@ -1,6 +1,7 @@
 import env from '#start/env'
 
 export const TMDB_BASE_URL = 'https://api.themoviedb.org/3/'
+export const language = '?language=fr-FR'
 
 export const TMDB_HEADERS = {
   headers: {
