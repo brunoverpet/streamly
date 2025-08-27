@@ -1,8 +1,12 @@
 import { language, TMDB_BASE_URL, TMDB_HEADERS } from '#config/config_tmdb'
 
 export class TmdbService {
-  async getAllMovies() {
-    return await this.fetchFromTmdb('discover/movie')
+  getAllMovies(type: 'movie' | 'tv') {
+    return this.fetchFromTmdb(`discover/${type}`)
+  }
+
+  getItem(id: string, type: 'movie' | 'tv') {
+    return this.fetchFromTmdb(`/${type}/' + ${id} + '?append_to_response=keywords,credits&`)
   }
 
   private async fetchFromTmdb(endpoint: string) {
