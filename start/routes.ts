@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import WatchedMovie from '#models/watched_movie'
+
 const CatalogsController = () => import('#controllers/catalogs_controller')
 
 const CatalogRecommendationsController = () =>
@@ -22,5 +23,6 @@ router.get('/', async () => {
 })
 
 router.get('catalogs', [CatalogsController, 'getCatalogs'])
+router.get('catalogs/:id', [CatalogsController, 'getCatalogItem'])
 
 router.get('/catalogs/recommendations', [CatalogRecommendationsController, 'getRecommandations'])

@@ -5,7 +5,13 @@ import { TmdbService } from '#services/tmdb_service'
 export class CatalogService {
   constructor(private tmdbService: TmdbService) {}
 
-  async getCatalogs() {
-    return await this.tmdbService.getAllMovies()
+  async getMoviesCatalogs() {
+    return await this.tmdbService.getAllMovies('movie')
+  }
+
+  async getCatalogItem(id: string) {
+    const item = await this.tmdbService.getItem(id, 'movie')
+    if (!item) return null
+    return item
   }
 }
