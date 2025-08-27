@@ -1,7 +1,7 @@
 import { language, TMDB_BASE_URL, TMDB_HEADERS } from '#config/config_tmdb'
 
 export class TmdbService {
-  getAllMovies(type: 'movie' | 'tv') {
+  getAllItems(type: 'movie' | 'tv') {
     return this.fetchFromTmdb(`discover/${type}`)
   }
 

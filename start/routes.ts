@@ -8,7 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
-import WatchedMovie from '#models/watched_movie'
+import WatchedMovie from '#models/watched_item'
 
 const CatalogsController = () => import('#controllers/catalogs_controller')
 

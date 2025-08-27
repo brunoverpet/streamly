@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
-export default class WatchedMovie extends BaseModel {
+export default class WatchedItem extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -25,9 +25,6 @@ export default class WatchedMovie extends BaseModel {
 
   @column()
   declare actors: object[]
-
-  @column()
-  declare rating: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

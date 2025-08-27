@@ -1,5 +1,5 @@
 import { CatalogService } from '#services/catalog_service'
-import { WatchedMovieService } from '#services/watched_movie_service'
+import { WatchedMovieService } from '#services/watched_items_service'
 import { inject } from '@adonisjs/core'
 
 @inject()
