@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
-import { CatalogService } from '#services/catalog_service'
 import { SingleItemFromTMDB } from '../interfaces/catalog_item.js'
 import WatchedItem from '#models/watched_item'
+import { CatalogService } from '#services/catalog_service'
 
 @inject()
 export class WatchedItemService {
