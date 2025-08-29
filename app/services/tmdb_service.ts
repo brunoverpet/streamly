@@ -1,8 +1,8 @@
 import { language, TMDB_BASE_URL, TMDB_HEADERS } from '#config/config_tmdb'
-import { SingleItemFromTMDB } from '../interfaces/catalog_item.js'
+import { CatalogsItem, SingleItemFromTMDB } from '../interfaces/catalog_item.js'
 
 export class TmdbService {
-  getAllItems(type: 'movie' | 'tv') {
+  getAllItems(type: 'movie' | 'tv'): Promise<CatalogsItem> {
     return this.fetchFromTmdb(`discover/${type}`)
   }
 

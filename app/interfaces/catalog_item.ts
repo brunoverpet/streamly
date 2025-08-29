@@ -1,5 +1,12 @@
-export interface CatalogItem {
-  idTmdb?: string
+export interface CatalogsItem {
+  page: number
+  results: [
+    {
+      backdrop_path: string
+      id: string
+      title: string
+    },
+  ]
   title?: string
   coverUrl?: string
   director?: string
