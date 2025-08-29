@@ -6,7 +6,7 @@ export class CatalogService {
   constructor(private tmdbService: TmdbService) {}
 
   async getMoviesCatalogs() {
-    return await this.tmdbService.getAllMovies('movie')
+    return await this.tmdbService.getAllItems('movie')
   }
 
   async getCatalogItem(id: string) {
