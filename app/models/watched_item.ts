@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { Actor, Genre, Keyword } from '../interfaces/catalog_item.js'
 
 export default class WatchedItem extends BaseModel {
   @column({ isPrimary: true })
@@ -17,14 +18,14 @@ export default class WatchedItem extends BaseModel {
   @column()
   declare director: string
 
-  @column()
-  declare genres: object[]
+  @column({ prepare: (value) => JSON.stringify(value) })
+  declare genres: Genre[]
 
-  @column()
-  declare keywords: object[]
+  @column({ prepare: (value) => JSON.stringify(value) })
+  declare keywords: Keyword[]
 
-  @column()
-  declare actors: object[]
+  @column({ prepare: (value) => JSON.stringify(value) })
+  declare actors: Actor[]
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
