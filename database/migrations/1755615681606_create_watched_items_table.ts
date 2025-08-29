@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string('cover_url').notNullable()
       table.string('director').notNullable()
       table.jsonb('genres').notNullable()
+      table.jsonb('production_company').notNullable()
       table.jsonb('keywords').nullable()
       table.jsonb('actors').notNullable()
 

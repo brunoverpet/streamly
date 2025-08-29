@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
-import { Actor, Genre, Keyword } from '../interfaces/catalog_item.js'
+import { Actor, Genre, Keyword, ProductionCompanies } from '../interfaces/catalog_item.js'
 
 export default class WatchedItem extends BaseModel {
   @column({ isPrimary: true })
@@ -20,6 +20,9 @@ export default class WatchedItem extends BaseModel {
 
   @column({ prepare: (value) => JSON.stringify(value) })
   declare genres: Genre[]
+
+  @column({ prepare: (value) => JSON.stringify(value) })
+  declare production_company: ProductionCompanies[]
 
   @column({ prepare: (value) => JSON.stringify(value) })
   declare keywords: Keyword[]

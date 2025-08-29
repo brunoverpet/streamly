@@ -30,7 +30,7 @@ export type Actor = {
   name: string
 }
 
-type ProductionCompanies = {
+export type ProductionCompanies = {
   id: number
   logo_path: string
   name: string
