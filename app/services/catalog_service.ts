@@ -1,9 +1,9 @@
 import { inject } from '@adonisjs/core'
-import { TmdbService } from '#services/tmdb_service'
+import { TMDBService } from '#services/tmdb_service'
 
 @inject()
 export class CatalogService {
-  constructor(private tmdbService: TmdbService) {}
+  constructor(private tmdbService: TMDBService) {}
 
   async getCatalogItem(id: string) {
     const item = await this.tmdbService.getItem(id, 'movie')
