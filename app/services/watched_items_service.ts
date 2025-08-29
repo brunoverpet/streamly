@@ -25,6 +25,12 @@ export class WatchedItemService {
           id: genre.id,
           name: genre.name,
         })) || [],
+      production_company: item.production_companies.map((prod) => ({
+        id: prod.id,
+        name: prod.name,
+        logo_path: prod.logo_path,
+        origin_country: prod.origin_country,
+      })),
       keywords: item.keywords.keywords?.map((word) => ({ id: word.id, name: word.name })) || [],
       actors:
         item.credits.cast.slice(0, 3).map((actor) => ({
