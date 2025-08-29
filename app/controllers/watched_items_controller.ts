@@ -6,6 +6,10 @@ import { inject } from '@adonisjs/core'
 export default class WatchedItemsController {
   constructor(private watchedItemService: WatchedItemService) {}
 
+  async getWatchedItems({}: HttpContext) {
+    return await this.watchedItemService.getWatchedMovie()
+  }
+
   async addItemToWatched({ params, response }: HttpContext) {
     const itemId: string = params.id
     const addItem = await this.watchedItemService.addWatchedItem(itemId)
