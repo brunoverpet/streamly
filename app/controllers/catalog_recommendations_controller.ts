@@ -7,6 +7,6 @@ export default class CatalogRecommendationsController {
   constructor(private catalogRecommandationService: CatalogRecommendationService) {}
 
   async getRecommandations({}: HttpContext) {
-    return this.catalogRecommandationService.test()
+    return this.catalogRecommandationService.recommandations()
   }
 }

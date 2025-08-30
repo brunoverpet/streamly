@@ -2,65 +2,52 @@ import { WatchedItemService } from '#services/watched_items_service'
 import { inject } from '@adonisjs/core'
 import { SingleItemFromTMDB } from '../interfaces/catalog_item.js'
 import WatchedItem from '#models/watched_item'
+import { TMDBService } from '#services/tmdb_service'
 
 @inject()
 export class CatalogRecommendationService {
-  constructor(private watchedMovieService: WatchedItemService) {}
+  constructor(
+    private watchedMovieService: WatchedItemService,
+    private tmdbService: TMDBService
+  ) {}
 
-  async test() {
-    const tmdbItem: SingleItemFromTMDB = {
-      id: '123',
-      title: 'Movie TMDB',
-      backdrop_path: '/image.jpg',
-      release_date: '2025-01-01',
-      vote_average: 8.5,
-      genres: [
-        { id: 28, name: 'Action' }, // match avec Logan
-        { id: 18, name: 'Drama' }, // match avec Logan
-        { id: 10749, name: 'Romance' }, // bonus, pas dans Logan
-      ],
-      production_companies: [
-        {
-          id: 91797,
-          logo_path: '/logo.png',
-          name: 'Hutch Parker Entertainment',
-          origin_country: 'US',
-        }, // match avec Logan
-        { id: 99999, logo_path: '/logo.png', name: 'Fake Studio', origin_country: 'US' }, // pas match
-      ],
-      keywords: {
-        keywords: [
-          { id: 2964, name: 'future' }, // match avec Logan
-          { id: 9999, name: 'time travel' }, // pas match
-        ],
-      },
-      credits: {
-        cast: [
-          { id: 6968, name: 'Hugh Jackman', known_for_department: 'Acting' }, // match
-          { id: 9999, name: 'Fake Actor', known_for_department: 'Acting' }, // pas match
-        ],
-        crew: [
-          { id: 10, name: 'James Mangold', job: 'Director' }, // match avec Logan
-        ],
-      },
-    }
-
+  async recommandations() {
     const watchedItems = await this.watchedMovieService.getWatchedMovie()
+    const allItems = await this.tmdbService.getAllItems('movie')
+
+    const results: any[] = []
+
     for (const watchedItem of watchedItems) {
-      console.log(`Watched Item ${watchedItem.title}`)
-      this.evaluateCatalogMatch(tmdbItem, watchedItem)
+      const watchedResult = {
+        watchedItem: watchedItem.title,
+        comparisons: [] as any[],
+      }
+
+      for (const tmdbItem of allItems) {
+        const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
+
+        const score = this.evaluateCatalogMatch(item, watchedItem)
+
+        watchedResult.comparisons.push({
+          comparedWith: item.title,
+          score,
+        })
+      }
+      watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
+      results.push(watchedResult)
     }
+    return results
   }
 
   private evaluateCatalogMatch(item1: SingleItemFromTMDB, item2: WatchedItem) {
     let score = 0
+    const reasons: string[] = []
 
     //#region ACTORS
     for (const actor of item1.credits.cast) {
       if (item2.actors.some((actor2) => actor2.name === actor.name)) {
+        reasons.push(`Acteur en commun: ${actor.name}`)
         score += 3
-      } else {
-        console.log('pas d acteur en commun')
       }
     }
     //#endregion
@@ -69,17 +56,15 @@ export class CatalogRecommendationService {
     const directorName = item1.credits.crew.find((c) => c.job === 'Director')?.name
     if (directorName && directorName === item2.director) {
       score += 2
-    } else {
-      console.log('pas de directeur en commun')
+      reasons.push(`Réalisateur en commun: ${directorName}`)
     }
     //#endregion
 
     //#region PRODUCTION
     for (const company of item1.production_companies) {
       if (item2.production_company.some((prod) => prod.name === company.name)) {
+        reasons.push(`Prod en commun: ${company.name}`)
         score += 1
-      } else {
-        console.log('pas de production en commun')
       }
     }
     //#endregion
@@ -88,8 +73,7 @@ export class CatalogRecommendationService {
     for (const itemGenre of item1.genres) {
       if (item2.genres.some((genre) => genre.name === itemGenre.name)) {
         score += 1
-      } else {
-        console.log('pas de genres en commun')
+        reasons.push(`Genre en commun: ${itemGenre.name}`)
       }
     }
     //#endregion
@@ -98,20 +82,21 @@ export class CatalogRecommendationService {
     for (const key of item1.keywords.keywords) {
       if (item2.keywords.some((keyword) => keyword.name === key.name)) {
         score += 0.5
+        reasons.push(`Keyword en commun: ${key.name}`)
       }
-      console.log('pas de keywords en commun')
     }
     //#endregion
 
     //#region VOTE_AVERAGE
     if (item1.vote_average >= 5) {
       score += 0.5
-    } else {
-      console.log('pas de point en plus pour le vote')
+      reasons.push(`Vote average supérieur à 5`)
     }
     //#endregion
 
-    console.log(score)
-    return score
+    return {
+      score,
+      reasons,
+    }
   }
 }
