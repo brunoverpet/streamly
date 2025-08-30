@@ -37,7 +37,8 @@ export class CatalogRecommendationService {
       watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
       results.push(watchedResult)
     }
-    return results
+    // return results
+    return this.getBestItems(results)
   }
 
   private evaluateCatalogMatch(item1: SingleItemFromTMDB, item2: WatchedItem) {
@@ -100,4 +101,31 @@ export class CatalogRecommendationService {
       reasons,
     }
   }
+
+  private getBestItems(results: { watchedItem: string; comparisons: any[] }[]) {
+    const bestItemsSelected: { watchedItem: string; bestComparisons: any[] }[] = []
+
+    for (const result of results) {
+      // On enlève les items déjà sélectionnés
+      const availableItems = result.comparisons.filter(
+        (item) =>
+          !bestItemsSelected.some((selected) =>
+            selected.bestComparisons.some((i) => i.id === item.id)
+          )
+      )
+
+      // On prend les deux meilleurs parmi les disponibles
+      const top2 = availableItems.slice(0, 2)
+
+      if (top2.length > 0) {
+        bestItemsSelected.push({
+          watchedItem: result.watchedItem,
+          bestComparisons: top2,
+        })
+      }
+    }
+
+    return bestItemsSelected
+  }
+
 }
