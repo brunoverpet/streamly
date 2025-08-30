@@ -30,6 +30,7 @@ export class CatalogRecommendationService {
 
         watchedResult.comparisons.push({
           comparedWith: item.title,
+          id: item.id,
           score,
         })
       }
