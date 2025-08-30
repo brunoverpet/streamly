@@ -1,9 +1,24 @@
 import { language, TMDB_BASE_URL, TMDB_HEADERS } from '#config/config_tmdb'
 import { CatalogsItem, SingleItemFromTMDB } from '../interfaces/catalog_item.js'
+import { TMDBPaginatedResponse } from '../interfaces/tmdb.js'
 
 export class TMDBService {
-  getAllItems(type: 'movie' | 'tv'): Promise<CatalogsItem> {
-    return this.fetchFromTmdb(`discover/${type}`)
+  async getAllItems(type: 'movie' | 'tv', maxPages: number = 5): Promise<CatalogsItem[]> {
+    let currentPage = 1
+    const allResults: CatalogsItem[] = []
+
+    while (currentPage <= maxPages) {
+      const response: TMDBPaginatedResponse<CatalogsItem> = await this.fetchFromTmdb(
+        `discover/${type}?language=fr-FR&page=${currentPage}`
+      )
+
+      allResults.push(...response.results)
+
+      if (currentPage >= 2) break // si on dépasse le nombre total de pages, on stoppe
+      currentPage++
+    }
+
+    return allResults
   }
 
   getItem(id: string, type: 'movie' | 'tv'): Promise<SingleItemFromTMDB> {

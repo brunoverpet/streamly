@@ -1,4 +1,5 @@
 export interface CatalogsItem {
+  id: string
   page: number
   results: [
     {
