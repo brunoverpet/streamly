@@ -61,19 +61,3 @@ export interface SingleItemFromTMDB {
   keywords: { keywords: Keyword[] }
   credits: { cast: Cast[]; crew: Crew[] }
 }
-
-export interface BestItems {
-  watchedResult: [
-    {
-      id: string
-      comparedWith: string
-      score: number
-    },
-  ]
-}
-
-export type WatchedComparison = {
-  id: string
-  comparedWith: string
-  score: number
-}
