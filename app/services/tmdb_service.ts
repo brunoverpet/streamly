@@ -1,5 +1,5 @@
 import { language, TMDB_BASE_URL, TMDB_HEADERS } from '#config/config_tmdb'
-import { CatalogsItem, SingleItemFromTMDB } from '../interfaces/catalog_item.js'
+import { CatalogsItem, SearchItem, SingleItemFromTMDB } from '../interfaces/catalog_item.js'
 import { TMDBPaginatedResponse } from '../interfaces/tmdb.js'
 
 export class TMDBService {
@@ -23,6 +23,18 @@ export class TMDBService {
 
   getItem(id: string, type: 'movie' | 'tv'): Promise<SingleItemFromTMDB> {
     return this.fetchFromTmdb(`/${type}/${id}?append_to_response=keywords,credits&`)
+  }
+
+  async searchItem(query: string): Promise<SearchItem> {
+    // const query = q.toLowerCase().trim()
+    const result: SearchItem = await this.fetchFromTmdb(
+      `/search/movie?query=${encodeURIComponent(query)}&language=fr-FR`
+    )
+
+    console.log(query)
+    // console.log(result)
+
+    return result
   }
 
   private async fetchFromTmdb<T>(endpoint: string): Promise<T> {

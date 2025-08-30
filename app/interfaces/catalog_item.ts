@@ -61,3 +61,8 @@ export interface SingleItemFromTMDB {
   keywords: { keywords: Keyword[] }
   credits: { cast: Cast[]; crew: Crew[] }
 }
+
+export interface SearchItem {
+  page: number
+  results: SingleItemFromTMDB[]
+}
