@@ -26,15 +26,9 @@ export class TMDBService {
   }
 
   async searchItem(query: string): Promise<SearchItem> {
-    // const query = q.toLowerCase().trim()
-    const result: SearchItem = await this.fetchFromTmdb(
+    return await this.fetchFromTmdb(
       `/search/movie?query=${encodeURIComponent(query)}&language=fr-FR`
     )
-
-    console.log(query)
-    // console.log(result)
-
-    return result
   }
 
   private async fetchFromTmdb<T>(endpoint: string): Promise<T> {

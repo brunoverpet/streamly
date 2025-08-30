@@ -8,6 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
+
 const SearchesController = () => import('#controllers/searches_controller')
 
 const CatalogRecommendationsController = () =>
@@ -20,6 +21,6 @@ router.get('/', [WatchedItemsController, 'getWatchedItems'])
 router.post('addWatchedItem/:id', [WatchedItemsController, 'addItemToWatched'])
 router.delete('removeWatchedItem/:id', [WatchedItemsController, 'deleteWatchedItem'])
 
-router.get('searchItem', [SearchesController, 'searchItem'])
+router.post('searchItem', [SearchesController, 'searchItem'])
 
 router.get('recommendations', [CatalogRecommendationsController, 'getRecommandations'])

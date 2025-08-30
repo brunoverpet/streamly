@@ -7,9 +7,9 @@ export default class SearchesController {
   constructor(private tmdbService: TMDBService) {}
 
   async searchItem({ request, response }: HttpContext) {
-    const query = request.qs()
+    const query = request.input('query')
 
-    const result = await this.tmdbService.searchItem(query.query)
+    const result = await this.tmdbService.searchItem(query)
     return response.ok({ result })
   }
 }
