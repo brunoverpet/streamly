@@ -37,7 +37,6 @@ export class CatalogRecommendationService {
       watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
       results.push(watchedResult)
     }
-    // return results
     return this.getBestItems(results)
   }
 
@@ -127,5 +126,4 @@ export class CatalogRecommendationService {
 
     return bestItemsSelected
   }
-
 }
