@@ -18,4 +18,13 @@ export default class WatchedItemsController {
 
     return response.ok({ message: 'Item added successfully' })
   }
+
+  async deleteWatchedItem({ params, response }: HttpContext) {
+    const id: string = params.id
+    const itemDeleted = await this.watchedItemService.deleteWatchedItem(id)
+
+    if (!itemDeleted)
+      return response.badRequest({ message: 'An error occurred while deleting item' })
+    return response.ok({ message: 'Item deleted successfully' })
+  }
 }

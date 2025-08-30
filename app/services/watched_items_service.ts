@@ -43,4 +43,12 @@ export class WatchedItemService {
 
     return createItem
   }
+
+  async deleteWatchedItem(id: string) {
+    const item = await WatchedItem.findBy({ id_tmdb: id })
+    if (!item) return null
+
+    await item.delete()
+    return true
+  }
 }

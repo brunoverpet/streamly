@@ -17,5 +17,6 @@ const WatchedItemsController = () => import('#controllers/watched_items_controll
 router.get('/', [WatchedItemsController, 'getWatchedItems'])
 
 router.post('addWatchedItem/:id', [WatchedItemsController, 'addItemToWatched'])
+router.delete('removeWatchedItem/:id', [WatchedItemsController, 'deleteWatchedItem'])
 
 router.get('recommendations', [CatalogRecommendationsController, 'getRecommandations'])
