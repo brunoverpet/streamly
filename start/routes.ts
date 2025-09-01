@@ -29,7 +29,7 @@ router.delete('logout', [AuthController, 'logout']).use(middleware.auth())
 router
   .group(() => {
     //#region WatchedItem
-    router.get('/', [WatchedItemsController, 'getWatchedItems'])
+    router.get('/watched', [WatchedItemsController, 'getWatchedItems'])
     router.post('addWatchedItem/:id', [WatchedItemsController, 'addItemToWatched'])
     router.delete('removeWatchedItem/:id', [WatchedItemsController, 'deleteWatchedItem'])
     //#endregion
