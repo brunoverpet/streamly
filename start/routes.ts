@@ -8,6 +8,9 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from '#start/kernel'
+
+const AuthController = () => import('#controllers/auth_controller')
 
 const SearchesController = () => import('#controllers/searches_controller')
 
@@ -16,11 +19,23 @@ const CatalogRecommendationsController = () =>
 
 const WatchedItemsController = () => import('#controllers/watched_items_controller')
 
-router.get('/', [WatchedItemsController, 'getWatchedItems'])
+//#region AUTH
+router.post('register', [AuthController, 'register'])
+router.post('login', [AuthController, 'login'])
 
-router.post('addWatchedItem/:id', [WatchedItemsController, 'addItemToWatched'])
-router.delete('removeWatchedItem/:id', [WatchedItemsController, 'deleteWatchedItem'])
+router.delete('logout', [AuthController, 'logout']).use(middleware.auth())
+//#endregion
 
-router.post('searchItem', [SearchesController, 'searchItem'])
+router
+  .group(() => {
+    //#region WatchedItem
+    router.get('/', [WatchedItemsController, 'getWatchedItems'])
+    router.post('addWatchedItem/:id', [WatchedItemsController, 'addItemToWatched'])
+    router.delete('removeWatchedItem/:id', [WatchedItemsController, 'deleteWatchedItem'])
+    //#endregion
 
-router.get('recommendations', [CatalogRecommendationsController, 'getRecommandations'])
+    router.post('searchItem', [SearchesController, 'searchItem'])
+
+    router.get('recommendations', [CatalogRecommendationsController, 'getRecommandations'])
+  })
+  .use(middleware.auth())
