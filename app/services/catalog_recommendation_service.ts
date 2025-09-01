@@ -15,6 +15,10 @@ export class CatalogRecommendationService {
     const watchedItems = await this.watchedMovieService.getWatchedMovie()
     const allItems = await this.tmdbService.getAllItems('movie')
 
+    const filteredItems = allItems.filter(
+      (tmdbItem) => !watchedItems.some((watched) => watched.idTmdb === tmdbItem.id.toString())
+    )
+
     const results: any[] = []
 
     for (const watchedItem of watchedItems) {
@@ -23,7 +27,7 @@ export class CatalogRecommendationService {
         comparisons: [] as any[],
       }
 
-      for (const tmdbItem of allItems) {
+      for (const tmdbItem of filteredItems) {
         const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
 
         const score = this.evaluateCatalogMatch(item, watchedItem)
@@ -37,6 +41,7 @@ export class CatalogRecommendationService {
       watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
       results.push(watchedResult)
     }
+
     return this.getBestItems(results)
   }
 
