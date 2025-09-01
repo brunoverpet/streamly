@@ -11,11 +11,12 @@ export class WatchedItemService {
     return await WatchedItem.all()
   }
 
-  async addWatchedItem(id: string) {
+  async addWatchedItem(id: string, userId: string) {
     const item: SingleItemFromTMDB | null = await this.catalogService.getCatalogItem(id)
     if (!item) return null
 
     const createItem = await WatchedItem.create({
+      userId,
       idTmdb: item.id,
       title: item.title,
       coverUrl: item.backdrop_path,

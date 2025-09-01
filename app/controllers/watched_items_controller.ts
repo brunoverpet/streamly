@@ -10,9 +10,16 @@ export default class WatchedItemsController {
     return await this.watchedItemService.getWatchedMovie()
   }
 
-  async addItemToWatched({ params, response }: HttpContext) {
+  async addItemToWatched({ auth, params, response }: HttpContext) {
     const itemId: string = params.id
-    const addItem = await this.watchedItemService.addWatchedItem(itemId)
+    const userId = auth.user?.id.toString()
+
+    if (!userId)
+      return response.unauthorized({
+        message: 'Vous devez être connecté pour ajouter un film aux visionnés.',
+      })
+
+    const addItem = await this.watchedItemService.addWatchedItem(itemId, userId)
     if (!addItem)
       return response.badGateway({ message: 'An error occurred while adding the catalog item ' })
 

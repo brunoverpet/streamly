@@ -9,6 +9,9 @@ export default class WatchedItem extends BaseModel {
   declare id: number
 
   @column()
+  declare userId: string
+
+  @column()
   declare idTmdb: string
 
   @column()
