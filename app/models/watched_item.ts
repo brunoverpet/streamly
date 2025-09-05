@@ -27,7 +27,7 @@ export default class WatchedItem extends BaseModel {
   declare release_date: string
 
   @column()
-  declare coverUrl: string
+  declare backdropPath: string
 
   @column()
   declare director: string

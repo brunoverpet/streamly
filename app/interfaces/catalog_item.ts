@@ -9,7 +9,7 @@ export interface CatalogsItem {
     },
   ]
   title?: string
-  coverUrl?: string
+  backdrop_path?: string
   director?: string
   genres?: Genre[]
   keywords?: Keyword[]

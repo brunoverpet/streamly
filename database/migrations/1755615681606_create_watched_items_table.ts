@@ -12,7 +12,7 @@ export default class extends BaseSchema {
       table.text('synopsys').notNullable()
       table.string('runtime').notNullable()
       table.string('release_date').notNullable()
-      table.string('cover_url').notNullable()
+      table.string('backdrop_path').notNullable()
       table.string('director').notNullable()
       table.jsonb('genres').notNullable()
       table.jsonb('production_company').notNullable()

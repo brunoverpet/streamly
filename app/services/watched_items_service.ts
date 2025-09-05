@@ -22,7 +22,7 @@ export class WatchedItemService {
       synopsys: item.overview,
       runtime: item.runtime,
       release_date: item.release_date,
-      coverUrl: item.backdrop_path,
+      backdropPath: item.backdrop_path,
       director: item.credits.crew.find((director) => director.job === 'Director')?.name,
       genres:
         item.genres.map((genre) => ({
@@ -50,7 +50,7 @@ export class WatchedItemService {
   }
 
   async deleteWatchedItem(id: string) {
-    const item = await WatchedItem.findBy({ id_tmdb: id })
+    const item = await WatchedItem.findBy({ id })
     if (!item) return null
 
     await item.delete()
