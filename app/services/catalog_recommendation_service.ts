@@ -84,7 +84,6 @@ export class CatalogRecommendationService {
   //   //   watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
   //   //   results.push(watchedResult)
   //   // }
-  //   console.log(results)
   //
   //   return this.getBestItems(results)
   // }
@@ -153,7 +152,6 @@ export class CatalogRecommendationService {
   private getBestItems(items: any[], top = 10) {
     // On trie par score décroissant
     const sortedItems = items.sort((a, b) => b.score - a.score)
-    console.log(sortedItems)
 
     // On retourne les top N
     return sortedItems.slice(0, top)
