@@ -22,7 +22,7 @@ export class TMDBService {
   }
 
   getItem(id: string, type: 'movie' | 'tv'): Promise<SingleItemFromTMDB> {
-    return this.fetchFromTmdb(`/${type}/${id}?append_to_response=keywords,credits&`)
+    return this.fetchFromTmdb(`/${type}/${id}?append_to_response=keywords,credits&language=fr-FR`)
   }
 
   async searchItem(query: string): Promise<SearchItem> {
