@@ -15,35 +15,79 @@ export class CatalogRecommendationService {
     const watchedItems = await this.watchedMovieService.getWatchedMovie()
     const allItems = await this.tmdbService.getAllItems('movie')
 
+    if (watchedItems.length === 0) return allItems
+
     const filteredItems = allItems.filter(
       (tmdbItem) => !watchedItems.some((watched) => watched.idTmdb === tmdbItem.id.toString())
     )
 
     const results: any[] = []
 
-    for (const watchedItem of watchedItems) {
-      const watchedResult = {
-        watchedItem: watchedItem.title,
-        comparisons: [] as any[],
+    for (const tmdbItem of filteredItems) {
+      const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
+
+      let totalScore = 0
+      for (const watchedItem of watchedItems) {
+        totalScore += this.evaluateCatalogMatch(item, watchedItem).score
       }
 
-      for (const tmdbItem of filteredItems) {
-        const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
-
-        const score = this.evaluateCatalogMatch(item, watchedItem)
-
-        watchedResult.comparisons.push({
-          comparedWith: item.title,
-          id: item.id,
-          score,
-        })
-      }
-      watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
-      results.push(watchedResult)
+      results.push({ ...item, score: totalScore })
     }
 
-    return this.getBestItems(results)
+    return this.getBestItems(results) // Top 10 par exemple
   }
+
+  // async recommandations1() {
+  //   const watchedItems = await this.watchedMovieService.getWatchedMovie()
+  //   const allItems = await this.tmdbService.getAllItems('movie')
+  //
+  //   if (watchedItems.length === 0) {
+  //     return allItems
+  //   }
+  //
+  //   // Filtrer les films déjà vus
+  //   const filteredItems = allItems.filter(
+  //     (tmdbItem) => !watchedItems.some((watched) => watched.idTmdb === tmdbItem.id.toString())
+  //   )
+  //
+  //   const results: any[] = []
+  //
+  //   for (const tmdbItem of filteredItems) {
+  //     const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
+  //
+  //     // Calculer le score par rapport à tous les films vus
+  //     let totalScore = 0
+  //     for (const watchedItem of watchedItems) {
+  //       totalScore += this.evaluateCatalogMatch(item, watchedItem).score
+  //     }
+  //
+  //     results.push({ ...item, score: totalScore })
+  //   }
+  //
+  //   // for (const watchedItem of watchedItems) {
+  //   //   const watchedResult = {
+  //   //     watchedItem: watchedItem.title,
+  //   //     comparisons: [] as any[],
+  //   //   }
+  //   //
+  //   //   for (const tmdbItem of filteredItems) {
+  //   //     const item = await this.tmdbService.getItem(tmdbItem.id, 'movie')
+  //   //
+  //   //     const score = this.evaluateCatalogMatch(item, watchedItem)
+  //   //
+  //   //     watchedResult.comparisons.push({
+  //   //       comparedWith: item.title,
+  //   //       id: item.id,
+  //   //       score,
+  //   //     })
+  //   //   }
+  //   //   watchedResult.comparisons.sort((a, b) => b.score.score - a.score.score)
+  //   //   results.push(watchedResult)
+  //   // }
+  //   console.log(results)
+  //
+  //   return this.getBestItems(results)
+  // }
 
   private evaluateCatalogMatch(item1: SingleItemFromTMDB, item2: WatchedItem) {
     let score = 0
@@ -106,29 +150,38 @@ export class CatalogRecommendationService {
     }
   }
 
-  private getBestItems(results: { watchedItem: string; comparisons: any[] }[]) {
-    const bestItemsSelected: { watchedItem: string; bestComparisons: any[] }[] = []
+  private getBestItems(items: any[], top = 10) {
+    // On trie par score décroissant
+    const sortedItems = items.sort((a, b) => b.score - a.score)
+    console.log(sortedItems)
 
-    for (const result of results) {
-      // On enlève les items déjà sélectionnés
-      const availableItems = result.comparisons.filter(
-        (item) =>
-          !bestItemsSelected.some((selected) =>
-            selected.bestComparisons.some((i) => i.id === item.id)
-          )
-      )
-
-      // On prend les deux meilleurs parmi les disponibles
-      const top2 = availableItems.slice(0, 2)
-
-      if (top2.length > 0) {
-        bestItemsSelected.push({
-          watchedItem: result.watchedItem,
-          bestComparisons: top2,
-        })
-      }
-    }
-
-    return bestItemsSelected
+    // On retourne les top N
+    return sortedItems.slice(0, top)
   }
+
+  // private getBestItems2(results: { watchedItem: string; comparisons: any[] }[]) {
+  //   const bestItemsSelected: { watchedItem: string; bestComparisons: any[] }[] = []
+  //
+  //   for (const result of results) {
+  //     // On enlève les items déjà sélectionnés
+  //     const availableItems = result.comparisons.filter(
+  //       (item) =>
+  //         !bestItemsSelected.some((selected) =>
+  //           selected.bestComparisons.some((i) => i.id === item.id)
+  //         )
+  //     )
+  //
+  //     // On prend les deux meilleurs parmi les disponibles
+  //     const top2 = availableItems.slice(0, 2)
+  //
+  //     if (top2.length > 0) {
+  //       bestItemsSelected.push({
+  //         watchedItem: result.watchedItem,
+  //         bestComparisons: top2,
+  //       })
+  //     }
+  //   }
+  //
+  //   return bestItemsSelected
+  // }
 }
