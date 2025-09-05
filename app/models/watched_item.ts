@@ -18,6 +18,15 @@ export default class WatchedItem extends BaseModel {
   declare title: string
 
   @column()
+  declare synopsys: string
+
+  @column()
+  declare runtime: string
+
+  @column()
+  declare release_date: string
+
+  @column()
   declare coverUrl: string
 
   @column()

@@ -29,6 +29,7 @@ export type Genre = {
 export type Actor = {
   id: number
   name: string
+  profil_path: string
 }
 
 export type ProductionCompanies = {
@@ -42,6 +43,7 @@ type Cast = {
   id: number
   name: string
   known_for_department: string
+  profile_path: string
 }
 
 type Crew = {
@@ -57,6 +59,8 @@ export interface SingleItemFromTMDB {
   production_companies: ProductionCompanies[]
   release_date: string
   title: string
+  overview: string
+  runtime: string
   vote_average: number
   keywords: { keywords: Keyword[] }
   credits: { cast: Cast[]; crew: Crew[] }

@@ -19,6 +19,9 @@ export class WatchedItemService {
       userId,
       idTmdb: item.id,
       title: item.title,
+      synopsys: item.overview,
+      runtime: item.runtime,
+      release_date: item.release_date,
       coverUrl: item.backdrop_path,
       director: item.credits.crew.find((director) => director.job === 'Director')?.name,
       genres:
@@ -37,6 +40,7 @@ export class WatchedItemService {
         item.credits.cast.slice(0, 3).map((actor) => ({
           id: actor.id,
           name: actor.name,
+          profil_path: actor.profile_path,
         })) || [],
     })
 
