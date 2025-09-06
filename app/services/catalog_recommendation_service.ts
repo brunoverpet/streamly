@@ -11,8 +11,8 @@ export class CatalogRecommendationService {
     private tmdbService: TMDBService
   ) {}
 
-  async recommandations() {
-    const watchedItems = await this.watchedMovieService.getWatchedMovie()
+  async recommandations(userId: string) {
+    const watchedItems = await this.watchedMovieService.getWatchedMovie(userId)
     const allItems = await this.tmdbService.getAllItems('movie')
 
     if (watchedItems.length === 0) return allItems

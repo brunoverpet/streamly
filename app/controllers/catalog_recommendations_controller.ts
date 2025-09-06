@@ -6,7 +6,7 @@ import { inject } from '@adonisjs/core'
 export default class CatalogRecommendationsController {
   constructor(private catalogRecommandationService: CatalogRecommendationService) {}
 
-  async getRecommandations({}: HttpContext) {
-    return this.catalogRecommandationService.recommandations()
+  async getRecommandations({ auth }: HttpContext) {
+    return this.catalogRecommandationService.recommandations(auth.user!.id.toString())
   }
 }

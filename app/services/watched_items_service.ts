@@ -7,8 +7,8 @@ import { CatalogService } from '#services/catalog_service'
 export class WatchedItemService {
   constructor(private catalogService: CatalogService) {}
 
-  async getWatchedMovie() {
-    return await WatchedItem.all()
+  async getWatchedMovie(userId: string) {
+    return WatchedItem.query().where('user_id', userId).select('*')
   }
 
   async addWatchedItem(id: string, userId: string) {
