@@ -12,19 +12,20 @@ export default class SearchesController {
 
     const result = await this.tmdbService.searchItem(query)
 
-    const userHistory = await WatchedItem.query()
+    // Récupère les idTmdb déjà vus
+    const userHistoryIds = await WatchedItem.query()
       .where('user_id', auth.user!.id)
-      .select('id_tmdb', 'id')
+      .select('id_tmdb')
 
-    const historyMap = new Map(userHistory.map((item) => [item.idTmdb, item.id]))
+    // Placer en string pour comparer correctement
+    const ids = userHistoryIds.map((item) => item.idTmdb)
 
+    // Ajoute seen à chaque film
     const resultsWithSeen = result.results.map((item) => {
-      const idTmdbStr = item.id.toString()
-      const watchedId = historyMap.get(idTmdbStr) || null
+      const isSeen = ids.includes(item.id.toString())
       return {
         ...item,
-        seen: watchedId !== null,
-        watched_id: watchedId,
+        seen: isSeen,
       }
     })
 
