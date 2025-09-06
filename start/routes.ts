@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+const MediaController = () => import('#controllers/media_controller')
 
 const AuthController = () => import('#controllers/auth_controller')
 
@@ -35,6 +36,8 @@ router
     //#endregion
 
     router.post('searchItem', [SearchesController, 'searchItem'])
+
+    router.get('media/:id', [MediaController, 'getMediaInfo'])
 
     router.get('recommendations', [CatalogRecommendationsController, 'getRecommandations'])
   })
