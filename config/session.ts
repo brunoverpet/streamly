@@ -24,6 +24,7 @@ const sessionConfig = defineConfig({
    */
   cookie: {
     path: '/',
+    domain: '.codehive.fr',
     httpOnly: true,
     secure: app.inProduction,
     sameSite: 'lax',
