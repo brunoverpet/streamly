@@ -14,7 +14,7 @@ export class TMDBService {
 
       allResults.push(...response.results)
 
-      if (currentPage >= 10) break // si on dépasse le nombre total de pages, on stoppe
+      if (currentPage >= 50) break // si on dépasse le nombre total de pages, on stoppe
       currentPage++
     }
 

@@ -34,7 +34,7 @@ export class CatalogRecommendationService {
       results.push({ ...item, score: totalScore })
     }
 
-    return this.getBestItems(results, 30) // Top 10 par exemple
+    return this.getBestItems(results, 50) // Top 10 par exemple
   }
 
   // async recommandations1() {
